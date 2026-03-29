@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Para ti 🫶🏾</title>
+    <style>
+        :root {
+            --color-amor: #ff4081;
+            --color-glow: rgba(255, 64, 129, 0.4);
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: radial-gradient(circle, #fff0f3 0%, #ffdde1 100%);
+            font-family: 'Poppins', sans-serif;
+            overflow: hidden;
+            touch-action: none; /* Evita zoom accidental */
+        }
+
+        /* Fondo con burbujas sutiles */
+        .bg-dots {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            background-image: radial-gradient(var(--color-glow) 1px, transparent 1px);
+            background-size: 40px 40px;
+            opacity: 0.3;
+        }
+
+        .main-card {
+            z-index: 10;
+            padding: 2rem;
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.1);
+            text-align: center;
+            pointer-events: none;
+        }
+
+        h1 {
+            color: var(--color-amor);
+            font-size: 1.5rem;
+            margin: 0;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        /* Estilo de los mensajes flotantes */
+        .floating-text {
+            position: absolute;
+            pointer-events: none;
+            font-weight: 700;
+            color: var(--color-amor);
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
+            white-space: nowrap;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 5px;
+            z-index: 100;
+            animation: moveUp 2s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+        }
+
+        .emoji {
+            font-size: 2rem;
+            filter: drop-shadow(0 5px 10px rgba(0,0,0,0.1));
+        }
+
+        @keyframes moveUp {
+            0% {
+                transform: translate(-50%, 0) scale(0.5) rotate(-10deg);
+                opacity: 0;
+            }
+            20% {
+                transform: translate(-50%, -30px) scale(1.2) rotate(5deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translate(-50%, -150px) scale(1) rotate(0deg);
+                opacity: 0;
+            }
+        }
+
+        /* Efecto de partículas al tocar */
+        .particle {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            background: var(--color-amor);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 99;
+            animation: explode 0.8s ease-out forwards;
+        }
+
+        @keyframes explode {
+            to {
+                transform: translate(var(--dx), var(--dy)) scale(0);
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+<body onpointerdown="createHeart(event)">
+
+    <div class="bg-dots"></div>
+
+    <div class="main-card">
+        <h1>Toca cualquier lugar 🫶🏾</h1>
+    </div>
+
+    <script>
+        function createHeart(e) {
+            const x = e.clientX;
+            const y = e.clientY;
+
+            // 1. Crear el texto flotante
+            const container = document.createElement('div');
+            container.className = 'floating-text';
+            container.style.left = x + 'px';
+            container.style.top = y + 'px';
+            
+            container.innerHTML = `
+                <span class="emoji">🫶🏾</span>
+                <span>te quiero</span>
+                <span style="font-size: 0.8rem">🥺</span>
+            `;
+
+            document.body.appendChild(container);
+
+            // 2. Crear pequeñas partículas de explosión
+            for (let i = 0; i < 6; i++) {
+                const p = document.createElement('div');
+                p.className = 'particle';
+                p.style.left = x + 'px';
+                p.style.top = y + 'px';
+                
+                // Direcciones aleatorias para las partículas
+                const dx = (Math.random() - 0.5) * 100 + 'px';
+                const dy = (Math.random() - 0.5) * 100 + 'px';
+                p.style.setProperty('--dx', dx);
+                p.style.setProperty('--dy', dy);
+                
+                document.body.appendChild(p);
+                setTimeout(() => p.remove(), 800);
+            }
+
+            // Limpiar el mensaje
+            setTimeout(() => container.remove(), 2000);
+        }
+    </script>
+</body>
+</html>
+
