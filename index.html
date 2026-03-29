@@ -2,254 +2,142 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Siempre a tu lado 🫶🏾</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Para mi mejor amigo 🤜🏾🤛🏾</title>
     <style>
-        :root {
-            --color-principal: #e02f6d; /* Un fucsia cálido */
-            --color-secundario: #880e4f; /* Un borgoña profundo */
-            --color-glow: rgba(224, 47, 109, 0.4);
-            --fondo: #fce4ec; /* Rosa muy pálido */
-        }
-
-        * {
-            box-sizing: border-box;
-            user-select: none; /* Evita que se seleccione el texto al tocar rápido */
-            -webkit-tap-highlight-color: transparent; /* Evita el cuadro azul al tocar en móvil */
-        }
-
         body {
             margin: 0;
-            padding: 0;
             height: 100vh;
+            background: #0f172a; /* Azul oscuro elegante */
+            color: white;
+            font-family: 'Segoe UI', Roboto, sans-serif;
+            overflow: hidden;
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
-            background: linear-gradient(135deg, #fdfbfb 0%, var(--fondo) 100%);
-            font-family: 'Poppins', sans-serif;
-            overflow: hidden;
-            touch-action: none; /* Importante para el efecto táctil en móviles */
+            text-align: center;
         }
 
-        /* Fondo de puntos esmerilado */
-        .bg-dots {
-            position: fixed;
+        /* El área táctil ocupa toda la pantalla */
+        #click-area {
+            position: absolute;
+            top: 0;
+            left: 0;
             width: 100%;
             height: 100%;
-            z-index: 0;
-            background-image: radial-gradient(var(--color-glow) 1px, transparent 1px);
-            background-size: 50px 50px;
-            opacity: 0.2;
+            z-index: 1;
         }
 
-        /* Tarjeta central (Glassmorphism) */
-        .main-card {
-            z-index: 10;
-            padding: 2rem;
-            background: rgba(255, 255, 255, 0.3);
-            backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px);
-            border-radius: 30px;
-            border: 1px solid rgba(255, 255, 255, 0.6);
-            box-shadow: 0 15px 35px 0 rgba(136, 14, 79, 0.1);
-            text-align: center;
-            pointer-events: none; /* Para que los toques pasen a través y activen el efecto */
-            max-width: 80%;
+        .card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 30px;
+            border-radius: 20px;
+            z-index: 2;
+            pointer-events: none; /* Deja pasar los clics al fondo */
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
         }
 
-        h1 {
-            color: var(--color-secundario);
-            font-size: 1.6rem;
-            margin: 0 0 1rem 0;
-            line-height: 1.3;
-        }
+        h1 { font-size: 1.5rem; margin-bottom: 10px; color: #38bdf8; }
+        p { opacity: 0.8; font-size: 0.9rem; }
 
-        .heart-icon {
-            color: var(--color-principal);
-            font-size: 2.5rem;
-            animation: pulse 1.5s infinite;
-        }
-
-        /* Estilo de los mensajes flotantes */
-        .floating-message {
+        .msg-flotante {
             position: absolute;
             pointer-events: none;
+            z-index: 100;
+            animation: flotar 1.5s ease-out forwards;
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 8px;
-            z-index: 100;
-            text-align: center;
-            min-width: 200px;
-            animation: moveAndFade 2.2s cubic-bezier(0.22, 0.61, 0.36, 1) forwards;
+            width: 200px;
+            margin-left: -100px; /* Centra el mensaje en el toque */
         }
 
-        .fl-text {
-            color: var(--color-principal);
-            font-weight: 700;
-            font-size: 1.1rem;
-            text-shadow: 0 0 15px rgba(255, 255, 255, 1);
-            background: rgba(255, 255, 255, 0.5);
-            padding: 5px 15px;
-            border-radius: 20px;
-            border: 1px solid rgba(255, 255, 255, 0.3);
+        .texto {
+            background: #38bdf8;
+            color: #0f172a;
+            padding: 8px 15px;
+            border-radius: 50px;
+            font-weight: bold;
+            font-size: 0.9rem;
+            box-shadow: 0 4px 15px rgba(56, 189, 248, 0.4);
         }
 
-        .fl-emoji {
-            font-size: 2.2rem;
-            filter: drop-shadow(0 5px 8px rgba(0,0,0,0.15));
+        .emoji { font-size: 2rem; margin-top: 5px; }
+
+        @keyframes flotar {
+            0% { transform: translateY(0) scale(0.5); opacity: 0; }
+            20% { transform: translateY(-20px) scale(1.1); opacity: 1; }
+            100% { transform: translateY(-120px) scale(1); opacity: 0; }
         }
 
-        /* Animación principal del mensaje */
-        @keyframes moveAndFade {
-            0% {
-                transform: translate(-50%, 0) scale(0.6) rotate(-15deg);
-                opacity: 0;
-            }
-            15% {
-                transform: translate(-50%, -40px) scale(1.1) rotate(5deg);
-                opacity: 1;
-            }
-            30% {
-                transform: translate(-50%, -60px) scale(1) rotate(0deg);
-                opacity: 1;
-            }
-            100% {
-                transform: translate(-50%, -200px) scale(0.9) rotate(0deg);
-                opacity: 0;
-            }
-        }
-
-        /* Efecto de partículas de confeti */
-        .confetti {
-            position: absolute;
-            width: 8px;
-            height: 8px;
-            background: var(--color-principal);
-            border-radius: 2px;
-            pointer-events: none;
-            z-index: 99;
-            animation: explodeConfetti 1s ease-out forwards;
-        }
-
-        @keyframes explodeConfetti {
-            0% { transform: translate(0, 0) rotate(0deg); opacity: 1; }
-            100% { transform: translate(var(--dx), var(--dy)) rotate(var(--dr)); opacity: 0; }
-        }
-
-        /* Animación de pulso para el corazón central */
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.1); }
-            100% { transform: scale(1); }
-        }
-
-        /* Firma XMihai_ */
-        .signature {
+        .firma {
             position: fixed;
-            bottom: 15px;
-            left: 0;
-            width: 100%;
-            text-align: center;
-            font-size: 0.8rem;
-            color: var(--color-secundario);
-            opacity: 0.6;
-            letter-spacing: 1px;
-            z-index: 5;
+            bottom: 20px;
+            font-size: 0.7rem;
+            letter-spacing: 2px;
+            color: #38bdf8;
+            z-index: 2;
         }
     </style>
 </head>
-<body onpointerdown="triggerEffect(event)">
+<body>
 
-    <div class="bg-dots"></div>
+    <div id="click-area"></div>
 
-    <div class="main-card">
-        <div class="heart-icon">🫶🏾</div>
-        <h1>Toca para recibir un mensaje</h1>
+    <div class="card">
+        <h1>Brother, esto es para ti 🤜🏾🤛🏾</h1>
+        <p>Toca la pantalla en cualquier lado...</p>
     </div>
 
-    <div class="signature">Echo por XMihai_</div>
- 
+    <div class="firma">HECHO POR XMIHAI_</div>
+
     <script>
-        // Array de frases que pediste
-        const phrases = [
-            "te quiero 🫶🏾🥺🫶🏾",
+        const frases = [
+            "te quiero bro 🫶🏾🥺🫶🏾",
             "todo pasa por algo ✨",
             "todo saldrá bien 🙏🏾",
-            "confía en el proceso 🤍",
-            "estoy aquí para ti 🤝🏾",
-            "eres fuerte, tú puedes",
-            "lo que sigue será mejor",
-            "no estás solo ❤️"
+            "siempre firmes 🤜🏾🤛🏾",
+            "eres un grande",
+            "la vida sigue y tú eres capaz",
+            "gracias por estar siempre",
+            "nunca te rindas 🚀"
         ];
 
-        let currentPhraseIndex = 0;
+        let i = 0;
+        const area = document.getElementById('click-area');
 
-        function triggerEffect(e) {
-            // No hacer nada si se toca dentro de un botón (si añades alguno luego)
-            if (e.target.tagName === 'BUTTON') return;
+        function crearMensaje(x, y) {
+            const div = document.createElement('div');
+            div.className = 'msg-flotante';
+            div.style.left = x + 'px';
+            div.style.top = y + 'px';
 
-            const x = e.clientX;
-            const y = e.clientY;
+            const fraseActual = frases[i];
+            i = (i + 1) % frases.length;
 
-            // 1. Obtener la frase actual y avanzar al siguiente índice
-            const text = phrases[currentPhraseIndex];
-            currentPhraseIndex = (currentPhraseIndex + 1) % phrases.length;
+            div.innerHTML = `<span class="texto">${fraseActual}</span><span class="emoji">✨</span>`;
 
-            // Separar emojis si la frase los tiene al final (para diseño)
-            const emojiRegex = /(\u00a9|\u00ae|[\u2000-\u3300]|\ud83c[\ud000-\udfff]|\ud83d[\ud000-\udfff]|\ud83e[\ud000-\udfff])/g;
-            const textWithoutEmojis = text.replace(emojiRegex, '').trim();
-            const emojis = text.match(emojiRegex) ? text.match(emojiRegex).join('') : '';
+            document.body.appendChild(div);
 
-            // 2. Crear el mensaje flotante
-            const container = document.createElement('div');
-            container.className = 'floating-message';
-            container.style.left = x + 'px';
-            container.style.top = y + 'px';
-            
-            // Si la frase es "te quiero", le damos diseño especial
-            if (text.includes("te quiero")) {
-                container.innerHTML = `
-                    <span class="fl-emoji">🫶🏾🥺🫶🏾</span>
-                    <span class="fl-text">te quiero</span>
-                `;
-            } else {
-                // Diseño estándar para el resto de frases
-                container.innerHTML = `
-                    <span class="fl-text">${textWithoutEmojis}</span>
-                    ${emojis ? `<span class="fl-emoji" style="font-size: 1.5rem">${emojis}</span>` : ''}
-                `;
-            }
-
-            document.body.appendChild(container);
-
-            // 3. Crear partículas de confeti
-            const colors = [var(--color-principal), '#ff8a80', '#ff80ab', '#ffffff'];
-            for (let i = 0; i < 8; i++) {
-                const confeto = document.createElement('div');
-                confeto.className = 'confetti';
-                confeto.style.left = x + 'px';
-                confeto.style.top = y + 'px';
-                confeto.style.background = colors[Math.floor(Math.random() * colors.length)];
-                
-                // Direcciones, rotación y tamaño aleatorios
-                const dx = (Math.random() - 0.5) * 150 + 'px';
-                const dy = (Math.random() - 0.5) * 150 + 'px';
-                const dr = (Math.random() * 360) + 'deg';
-                confeto.style.setProperty('--dx', dx);
-                confeto.style.setProperty('--dy', dy);
-                confeto.style.setProperty('--dr', dr);
-                confeto.style.width = confeto.style.height = (Math.random() * 6 + 4) + 'px';
-                
-                document.body.appendChild(confeto);
-                // Limpiar confeti
-                setTimeout(() => confeto.remove(), 1000);
-            }
-
-            // 4. Limpiar el mensaje flotante después de la animación
-            setTimeout(() => container.remove(), 2200);
+            // Se borra solo al terminar la animación
+            setTimeout(() => div.remove(), 1500);
         }
+
+        // Detectar en PC
+        area.addEventListener('mousedown', (e) => {
+            crearMensaje(e.clientX, e.clientY);
+        });
+
+        // Detectar en Móvil (sin retraso)
+        area.addEventListener('touchstart', (e) => {
+            e.preventDefault();
+            const touch = e.touches[0];
+            crearMensaje(touch.clientX, touch.clientY);
+        }, { passive: false });
+
     </script>
 </body>
 </html>
